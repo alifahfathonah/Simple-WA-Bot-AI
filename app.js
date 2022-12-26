@@ -85,7 +85,7 @@ async function connectToWhatsApp () {
                 await sock.sendMessage(id, {text: thing},{quoted: messages[0] });
             
             }else{
-                var things = [ 'cerewet anda', 'xixixi lucu bangettt', 'Si paling jago, emang', 'NT kadang kadang NT', 'hahahah f', 'unch unch dan unyu', 'makan lah sikit nanti sakit', 'makan lah sikit nanti mati', 'gombalin aqu dong', 'ah masaaa', 'ayam ayam apa yang..', 'iyaa seyenk', 'ditinggal pas sayang sayange', 'afa iyah', 'haa ga denger..', 'bek bek bek'];
+                var things = [ 'q','w','e','r','t','y'];
                 var thing = things[Math.floor(Math.random()*things.length)];
                 await sock.sendMessage(id, {text: thing},{quoted: messages[0] });
             }
