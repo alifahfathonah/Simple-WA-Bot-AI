@@ -1,4 +1,4 @@
-# Super-Simple-WA-Bot
+# Super Simple WA Bot
 
 Support live on CPANEL shared hosting.
 
