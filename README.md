@@ -1,5 +1,7 @@
 # Super-Simple-WA-Bot
 
+Support live on CPANEL shared hosting.
+
 - instal node.js v 12 or higher
 - clone this repo
 - npm instal
