@@ -9,7 +9,11 @@ const { Boom } =require("@hapi/boom");
 const app = require("express")();
 const server = require("http").createServer(app);
 const port = process.env.PORT || 8008;
-
+const { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
+  apiKey:"",
+});
+const openai = new OpenAIApi(configuration);
 
 async function connectToWhatsApp () {
     const sock = makeWASocket({
@@ -29,8 +33,6 @@ async function connectToWhatsApp () {
             }
         } else if(connection === 'open') {
             console.log('opened connection')
-            // const monitor = "628869583018"
-            // sock.sendMessage(monitor+'@s.whatsapp.net', {text: "I'm allive"});
         }
     })
 
@@ -39,7 +41,6 @@ async function connectToWhatsApp () {
         
         
         if(!messages[0].key.fromMe) {
-            // const id = '6288129930000@s.whatsapp.net';
             const id = messages[0].key.remoteJid;
             const pesan = messages[0].message.conversation;
             const pesanMasuk = pesan.toLowerCase();
@@ -56,24 +57,6 @@ async function connectToWhatsApp () {
             }else if(!messages[0].key.fromMe && pesanMasuk === "hari"){
                 await sock.sendMessage(id, {text: day},{quoted: messages[0] });
 
-            }else if(!messages[0].key.fromMe && pesanMasuk === "q"){
-                await sock.sendMessage(id, {text: "qwerty"},{quoted: messages[0] });
-
-            }else if(!messages[0].key.fromMe && pesanMasuk === "a"){
-                await sock.sendMessage(id, {text: "asdfg"},{quoted: messages[0] });
-
-            }else if(!messages[0].key.fromMe && pesanMasuk === "create"){
-                await sock.sendMessage(id, {text: "System akan mulai membuat harimu jadi suram"},{quoted: messages[0] });
-
-            }else if(!messages[0].key.fromMe && pesanMasuk === "read"){
-                await sock.sendMessage(id, {text: "System sedang membaca pikiran kotormu"},{quoted: messages[0] });
-
-            }else if(!messages[0].key.fromMe && pesanMasuk === "update"){
-                await sock.sendMessage(id, {text: "System mendeteksi kamu update sosmed tapi hanya konten flexing yang membagongkan"},{quoted: messages[0] });
-
-            }else if(!messages[0].key.fromMe && pesanMasuk === "delete"){
-            await sock.sendMessage(id, {text: "Sistem memcoba menghapus kemalasanmu tapi gagal"},{quoted: messages[0] });
-
             }else if(!messages[0].key.fromMe && pesanMasuk.includes("lagi")){
                 var things = ['Lagi mencoba jadi goblok','Lagi sok asik','lagi anu', 'apa lagi si', 'lagi pengen seblac', 'lagi mikirin selain kamu']
                 var thing = things[Math.floor(Math.random()*things.length)];
@@ -85,9 +68,30 @@ async function connectToWhatsApp () {
                 await sock.sendMessage(id, {text: thing},{quoted: messages[0] });
             
             }else{
-                var things = ['cerewet anda', 'xixixi lucu bangettt', 'Si paling jago, emang', 'NT kadang kadang NT', 'hahahah f', 'unch unch dan unyu', 'makan lah sikit nanti sakit', 'makan lah sikit nanti mati', 'gombalin aqu dong', 'ah masaaa', 'ayam ayam apa yang..', 'iyaa seyenk', 'ditinggal pas sayang sayange', 'afa iyah', 'haa ga denger..', 'bek bek bek'];
-                var thing = things[Math.floor(Math.random()*things.length)];
-                await sock.sendMessage(id, {text: thing},{quoted: messages[0] });
+
+                try {
+                    const completion = await openai.createCompletion({
+                        model: "text-davinci-003",
+                        prompt: pesanMasuk,
+                        max_tokens: 3000,
+                        temperature: 0,
+                        top_p: 1.0,
+                        frequency_penalty: 0.0,
+                        presence_penalty: 0.0,
+                    });
+                    // console.log(completion.data.choices[0].text);
+                    const chatResult = completion.data.choices[0].text;
+                    const modifiedResult = chatResult.replace(/\n\n/g, "\n").replace(/\n\n\n/g, "").replace(/\n/, "");;
+                    await sock.sendMessage(id, {text: modifiedResult },{quoted: messages[0] });
+                  } catch (error) {
+                    if (error.response) {
+                      console.log(error.response.status);
+                      console.log(error.response.data);
+                    } else {
+                      console.log(error.message);
+                    }
+                  }
+
             }
         }
 
