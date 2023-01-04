@@ -11,7 +11,7 @@ const server = require("http").createServer(app);
 const port = process.env.PORT || 8008;
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
-  apiKey:"",
+  apiKey:"",//isi sesuai API key pribadi
 });
 const openai = new OpenAIApi(configuration);
 
