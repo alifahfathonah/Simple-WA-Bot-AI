@@ -1,6 +1,6 @@
 # Super Simple WA Bot
 
-Integrate with OpenAI - ChatGPT 
+Integrate with OpenAI - ChatGPT.
 
 Support live on CPANEL shared hosting.
 
