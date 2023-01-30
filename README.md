@@ -1,5 +1,7 @@
 # Super Simple WA Bot
 
+Integrate with OpenAI - ChatGPT 
+
 Support live on CPANEL shared hosting.
 
 - instal node.js v 12 or higher
